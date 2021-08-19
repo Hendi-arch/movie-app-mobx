@@ -1,2 +1,3 @@
 // define all your path routes here
-const home = '/';
+const movie = '/';
+const movieDetail = 'movie_detail';

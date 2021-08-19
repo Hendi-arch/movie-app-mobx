@@ -7,9 +7,9 @@ class MovieModel {
 
   MovieModel({
     required this.id,
-    this.title,
-    this.director,
-    this.summary,
+    required this.title,
+    required this.director,
+    required this.summary,
     required this.tags,
   });
 }
