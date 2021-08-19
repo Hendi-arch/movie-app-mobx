@@ -1,7 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:movie_app_test/app/app_locator.dart';
 import 'package:movie_app_test/app/app_router.gr.dart';
-import 'package:movie_app_test/app/paths.dart';
 import 'package:movie_app_test/core/constant/enums.dart';
 import 'package:movie_app_test/core/models/movie_model.dart';
 
