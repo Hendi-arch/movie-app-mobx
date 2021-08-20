@@ -13,6 +13,7 @@ Required libraries:
 • [MobX](https://mobx.netlify.app/)
 • [AutoRoute](https://autoroute.vercel.app/)
 Success criteria:
-1. Share the source code in GitLab (set to public, or invite @thomas.wiradikusuma). 2. Ensure that it's built as per spec.
+1. Share the source code in GitLab (set to public, or invite @thomas.wiradikusuma). 
+2. Ensure that it's built as per spec.
 3. Ensure that it’s runnable in device/emulator.
 4. You will demo it to the interviewer. Please be prepared.
