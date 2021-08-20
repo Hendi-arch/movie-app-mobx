@@ -24,40 +24,32 @@ mixin _$MovieViewModel on _MovieViewModel, Store {
     });
   }
 
-  final _$_MovieViewModelActionController =
-      ActionController(name: '_MovieViewModel');
+  final _$addMovieAsyncAction = AsyncAction('_MovieViewModel.addMovie');
 
   @override
-  void addMovie() {
-    final _$actionInfo = _$_MovieViewModelActionController.startAction(
-        name: '_MovieViewModel.addMovie');
-    try {
-      return super.addMovie();
-    } finally {
-      _$_MovieViewModelActionController.endAction(_$actionInfo);
-    }
+  Future<dynamic> addMovie(MovieModel data) {
+    return _$addMovieAsyncAction.run(() => super.addMovie(data));
   }
 
-  @override
-  void updateMovie() {
-    final _$actionInfo = _$_MovieViewModelActionController.startAction(
-        name: '_MovieViewModel.updateMovie');
-    try {
-      return super.updateMovie();
-    } finally {
-      _$_MovieViewModelActionController.endAction(_$actionInfo);
-    }
-  }
+  final _$updateMovieAsyncAction = AsyncAction('_MovieViewModel.updateMovie');
 
   @override
-  void deleteMovie() {
-    final _$actionInfo = _$_MovieViewModelActionController.startAction(
-        name: '_MovieViewModel.deleteMovie');
-    try {
-      return super.deleteMovie();
-    } finally {
-      _$_MovieViewModelActionController.endAction(_$actionInfo);
-    }
+  Future<dynamic> updateMovie(String id, MovieModel data) {
+    return _$updateMovieAsyncAction.run(() => super.updateMovie(id, data));
+  }
+
+  final _$deleteMovieAsyncAction = AsyncAction('_MovieViewModel.deleteMovie');
+
+  @override
+  Future<dynamic> deleteMovie(String id) {
+    return _$deleteMovieAsyncAction.run(() => super.deleteMovie(id));
+  }
+
+  final _$getMovieAsyncAction = AsyncAction('_MovieViewModel.getMovie');
+
+  @override
+  Future<dynamic> getMovie() {
+    return _$getMovieAsyncAction.run(() => super.getMovie());
   }
 
   @override

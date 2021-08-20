@@ -14,11 +14,17 @@ class _MovieListState extends State<MovieList> with RouteAware {
   final _viewModel = MovieViewModel();
 
   @override
+  void initState() {
+    _viewModel.getMovie();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     routeObserver.unsubscribe(this);
     super.dispose();
   }
-  
+
   @override
   void didChangeDependencies() {
     routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
@@ -27,7 +33,7 @@ class _MovieListState extends State<MovieList> with RouteAware {
 
   @override
   void didPopNext() {
-    // TODO: implement didPopNext
+    _viewModel.getMovie();
     super.didPopNext();
   }
 
@@ -38,7 +44,7 @@ class _MovieListState extends State<MovieList> with RouteAware {
         return ListView.separated(
           itemBuilder: (context, index) {
             return ListTile(
-              onTap: _viewModel.addMovie,
+              onTap: () => _viewModel.onTapMovie(_viewModel.movies[index]),
               title: Text(_viewModel.movies[index].title ?? ''),
               subtitle: Text(_viewModel.movies[index].summary ?? ''),
             );

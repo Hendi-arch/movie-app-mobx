@@ -11,6 +11,13 @@ class MovieFormField extends StatelessWidget {
     return TextFormField(
       maxLines: maxLines,
       controller: textEditingController,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'This field is required';
+        }
+
+        return null;
+      },
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: OutlineInputBorder(
@@ -26,6 +33,12 @@ class MovieFormField extends StatelessWidget {
           ),
         ),
         errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 1.0,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.red,
             width: 1.0,

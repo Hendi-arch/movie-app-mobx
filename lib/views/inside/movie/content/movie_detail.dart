@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app_test/core/constant/enums.dart';
+import 'package:movie_app_test/core/models/movie_model.dart';
+import 'package:movie_app_test/core/services/utility_service.dart';
+import 'package:movie_app_test/core/viewmodels/movie/movie_viewmodel.dart';
 import 'package:movie_app_test/views/inside/movie/local_widgets/movie_drop_down_field.dart';
 import 'package:movie_app_test/views/inside/movie/local_widgets/movie_form_field.dart';
 import 'package:movie_app_test/views/widgets/button_widget.dart';
 import 'package:movie_app_test/views/widgets/spacer_widget.dart';
 
 class MovieDetail extends StatefulWidget {
+  final MovieModel? data;
   final AppState appState;
-  const MovieDetail({Key? key, required this.appState}) : super(key: key);
+  const MovieDetail({Key? key, required this.appState, this.data}) : super(key: key);
 
   @override
   _MovieDetailState createState() => _MovieDetailState();
@@ -15,10 +19,36 @@ class MovieDetail extends StatefulWidget {
 
 class _MovieDetailState extends State<MovieDetail> {
   // holding data state for save
-  String selectedTags = '';
+  String? selectedTags;
   final TextEditingController titleController = TextEditingController();
   final TextEditingController directorController = TextEditingController();
   final TextEditingController summaryController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  static final _viewModel = MovieViewModel();
+  static final _utilityService = UtilityService();
+
+  void _initializeData() {
+    if (widget.data != null) {
+      titleController.text = widget.data!.title!;
+      directorController.text = widget.data!.director!;
+      summaryController.text = widget.data!.summary!;
+      selectedTags = widget.data!.tags!;
+    }
+  }
+
+  void _validateForm(VoidCallback fn) {
+    if (_formKey.currentState!.validate()) {
+      fn();
+    }
+  }
+
+  @override
+  void initState() {
+    _initializeData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +68,29 @@ class _MovieDetailState extends State<MovieDetail> {
           actions: [
             if (widget.appState != AppState.add) ...[
               ButtonWidget(
-                onPressed: () {},
+                onPressed: () => _validateForm(() => _viewModel.updateMovie(
+                    widget.data!.id!,
+                    MovieModel(
+                      title: titleController.text,
+                      director: directorController.text,
+                      summary: summaryController.text,
+                      tags: selectedTags,
+                    ))),
                 caption: 'Update',
               ),
               ButtonWidget(
-                onPressed: () {},
+                onPressed: () => _validateForm(() => _viewModel.deleteMovie(widget.data!.id!)),
                 caption: 'Delete',
               )
             ] else
               ButtonWidget(
-                onPressed: () {},
+                onPressed: () => _validateForm(() => _viewModel.addMovie(MovieModel(
+                      id: _utilityService.generateObejectId(),
+                      title: titleController.text,
+                      director: directorController.text,
+                      summary: summaryController.text,
+                      tags: selectedTags,
+                    ))),
                 caption: 'Save',
               ),
           ],
@@ -58,24 +101,27 @@ class _MovieDetailState extends State<MovieDetail> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                SpacerWidget(),
-                MovieFormField(
-                  label: 'Title',
-                  textEditingController: titleController,
-                ),
-                SpacerWidget(),
-                MovieFormField(label: 'Director', textEditingController: directorController),
-                SpacerWidget(),
-                MovieDropDownField(),
-                SpacerWidget(),
-                MovieFormField(
-                  label: 'Summary',
-                  maxLines: null,
-                  textEditingController: summaryController,
-                ),
-              ],
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  SpacerWidget(),
+                  MovieFormField(
+                    label: 'Title',
+                    textEditingController: titleController,
+                  ),
+                  SpacerWidget(),
+                  MovieFormField(label: 'Director', textEditingController: directorController),
+                  SpacerWidget(),
+                  MovieDropDownField(onChange: (value) => selectedTags = value ?? '', value: selectedTags),
+                  SpacerWidget(),
+                  MovieFormField(
+                    label: 'Summary',
+                    maxLines: null,
+                    textEditingController: summaryController,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
