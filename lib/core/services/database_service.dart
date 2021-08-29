@@ -30,18 +30,14 @@ class DatabaseService {
 
   // update data
   Future<int> updateData(String id, Map data) async {
-    final _result = await _dbInstance.update({
-      Op.gte: {'id': id}
-    }, data);
+    final _result = await _dbInstance.update({'id': id}, data);
 
     return _result;
   }
 
   // remove data
   Future<int> removeData(String id) async {
-    final _result = await _dbInstance.remove({
-      Op.gte: {'id': id}
-    });
+    final _result = await _dbInstance.remove({'id': id});
 
     return _result;
   }
